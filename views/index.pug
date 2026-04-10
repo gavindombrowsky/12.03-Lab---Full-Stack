@@ -3,21 +3,30 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  
   ol
-  each val in todos
-    li
-      span= val.task + ' - '
-      if val.completed > 0
-        span Completed
-      else
-        span Not Completed
-      form(method='POST' action='/delete')
-        input(type='hidden', name='id', value=val.id)
-        button(type='submit') Delete
+    each val in todos
+      li
+        //- The Update Form combines the checkbox and description
+        form(method='POST' action='/update/' + val.id style='display: inline-flex; align-items: center; gap: 10px;')
+          
+          //- Checkbox changes state. 'onchange' auto-saves when clicked.
+          input(type='checkbox' name='completed' checked=(val.completed > 0) onchange='this.form.submit()')
+          
+          //- Text input allows editing the description. 'required' prevents blanks.
+          input(type='text' name='task' value=val.task required)
+          
+          button(type='submit') Save
+
+        //- The Delete Form stays separate
+        form(method='POST' action='/delete' style='display: inline;')
+          input(type='hidden', name='id', value=val.id)
+          button(type='submit' style='color: red; margin-left: 10px;') Delete
 
   hr
   h2 Add a new task
   form(method='POST' action='/create')
     label(for='task') Task:
+    //- Added 'required' here to prevent blank submissions from the start
     input(type='text', name='task', id='task', required)
     button(type='submit') Create Task

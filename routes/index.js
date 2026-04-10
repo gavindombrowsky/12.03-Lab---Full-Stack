@@ -53,4 +53,20 @@ router.post('/delete', function (req, res, next) {
     }
 });
 
+// Example: Updating both description and status
+router.post('/update/:id', (req, res) => {
+    const id = req.params.id;
+    const { task, completed } = req.body;
+    // Map checkbox 'on' to 1, otherwise 0 for the database
+    const status = completed === 'on' ? 1 : 0;
+
+    const query = "UPDATE todos SET task = ?, completed = ? WHERE id = ?";
+    req.db.query(query, [task, status, id], (err, result) => {
+        if (err) throw err;
+        res.redirect('/');
+    });
+});
+
+
+
 module.exports = router;
