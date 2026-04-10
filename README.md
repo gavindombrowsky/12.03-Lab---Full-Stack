@@ -1,4 +1,4 @@
-📝 CS208: My Simple TODO App
+# CS208: My Simple TODO App
 
 Developer: Gavin Dombrowsky
 
